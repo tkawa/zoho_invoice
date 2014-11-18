@@ -9,7 +9,7 @@ end
 group :test do
   gem 'pry'
   gem 'coveralls', :require => false
-  gem 'rspec', '>= 2.11'
+  gem 'rspec', '~> 2.11'
   gem 'simplecov', :require => false
   gem 'webmock'
 end
