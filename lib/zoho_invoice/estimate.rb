@@ -26,7 +26,9 @@ module ZohoInvoice
       :custom_fields,
       :salesperson_id,
       :salesperson_name,
-      :last_modified_time
+      :last_modified_time,
+      :notes,
+      :terms
     ]
 
     CREATE_UPDATE_ATTRIBUTES = READ_ATTRIBUTES - [:estimate_id]
