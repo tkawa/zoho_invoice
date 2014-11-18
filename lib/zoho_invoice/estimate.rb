@@ -36,15 +36,7 @@ module ZohoInvoice
     has_many :line_items
     has_many :custom_fields
 
-    def self.create(client, options = {})
-      raise ZohoInvoice::ActionNotSupportedError
-    end
-
-    def save
-      raise ZohoInvoice::ActionNotSupportedError
-    end
-
-    def self.all(client) 
+    def self.all(client)
       retrieve(client, '/api/v3/estimates')
     end
 
