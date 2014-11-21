@@ -50,5 +50,15 @@ module ZohoInvoice
       self.new(client, options).save(send: true)
     end
 
+    def send_email(params = {})
+      params[:to_mail_ids] ||= []
+      result = client.post("/api/v3/estimates/#{estimate_id}/email", params)
+      self
+    rescue Faraday::Error::ClientError => e
+      if e.response && e.response[:body]
+        raise ZohoInvoice::Error::ClientError.from_response(e.response)
+      end
+    end
+
   end
 end
