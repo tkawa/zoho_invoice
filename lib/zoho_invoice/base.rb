@@ -62,13 +62,14 @@ module ZohoInvoice
 
     # TODO Determining the resource to use will need to change
     #
-    def save
+    def save(params = {})
       klass_name = self.class.to_s.split('::').last
       invoice_id = send("#{klass_name.downcase}_id")
+      params = params.reverse_merge(JSONString: self.to_json)
       if(invoice_id.blank?)
-        result = client.post("/api/v3/#{klass_name.downcase + 's'}", :JSONString => self.to_json)
+        result = client.post("/api/v3/#{klass_name.downcase + 's'}", params)
       else
-        result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", :JSONString => self.to_json)
+        result = client.put("/api/v3/#{klass_name.downcase + 's'}/#{invoice_id}", params)
       end
       if invoice_id.blank? && !result.env.blank? && !result.env.body.blank? && !result.env.body[klass_name.downcase].blank?
         result.env.body[klass_name.downcase].each do |elem|

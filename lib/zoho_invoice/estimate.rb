@@ -46,5 +46,9 @@ module ZohoInvoice
       retrieve(client, "/api/v3/estimates/#{id}", false)
     end
 
+    def self.create_and_send(client, options = {})
+      self.new(client, options).save(send: true)
+    end
+
   end
 end
