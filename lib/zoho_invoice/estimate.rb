@@ -50,9 +50,21 @@ module ZohoInvoice
       self.new(client, options).save(send: true)
     end
 
+    def self.send_email(estimate_ids)
+      raise ZohoInvoice::ActionNotSupportedError
+    end
+
+    # If no params are present, an email is sent to default contact
+    # Otherwise, params[:to_mail_ids] requires one address at least
     def send_email(params = {})
-      params[:to_mail_ids] ||= []
-      result = client.post("/api/v3/estimates/#{estimate_id}/email", params)
+      send_email_with_attachments(nil, params)
+    end
+
+    def send_email_with_attachments(attachments, params = {})
+      post_params = {}
+      post_params[:JSONString] = params.to_json if params.present?
+      post_params[:attachments] = attachments if attachments.present?
+      result = client.post("/api/v3/estimates/#{estimate_id}/email", post_params)
       self
     rescue Faraday::Error::ClientError => e
       if e.response && e.response[:body]
